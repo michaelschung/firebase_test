@@ -61,26 +61,42 @@ class Button extends Component {
 	}
 }
 
+class TestText extends Component {
+	render() {
+		return (
+			<Text style = {styles.text}>{str}</Text>
+		);
+	}
+}
+
 class App extends Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			string: 'hello'
+		};
 	}
 
 	readData = () => {
-		database.ref('random').once('value').then(function(snapshot) {
-			var string = snapshot.val().string;
-			return (
-				<Text style={styles.text}>{string}</Text>
-			);
-			console.log('NUM:', num);
-		});
+		// database.ref('random').once('value').then(function(snapshot) {
+		// 	var string = snapshot.val().string;
+		// 	console.log('STRING:', string);
+		// });
+		database.ref('random').on('value', (snap) => {
+			var str = snap.val().string;
+			console.log('STR:', str);
+			this.setState({
+				string: str
+			});
+		})
 	}
 
 	/* Render everything */
 	render() {
 		console.log('rendering App');
 
-		firebase.database().ref('random').set({
+		database.ref('random').set({
 			number: 123,
 			string: 'hi'
 		});
@@ -90,7 +106,7 @@ class App extends Component {
 
 		return (
 			<View style={styles.container}>
-				<Text style={styles.text}>HELLO THIS IS WORKING??</Text>
+				<Text style={styles.text}>{this.state.string}</Text>
 			</View>
 		);
 	}
