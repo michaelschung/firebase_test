@@ -46,6 +46,10 @@ const styles = StyleSheet.create({
 		top: 200,
 		padding: 10,
 	},
+	buttonText: {
+		color: 'white',
+		fontWeight: 'bold',
+	},
 	container: {
 		flex: 1,
 		borderLeftWidth: 1,
@@ -135,13 +139,13 @@ class App extends Component {
 					style={styles.button1}
 					onPress={() => this.handlePress('string')}
 				>
-					<Text>string</Text>
+					<Text style={styles.buttonText}>string</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={styles.button2}
 					onPress={() => this.handlePress('number')}
 				>
-					<Text>number</Text>
+					<Text style={styles.buttonText}>number</Text>
 				</TouchableOpacity>
 			</View>
 		);
