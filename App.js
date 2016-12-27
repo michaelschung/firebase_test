@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		position: 'absolute',
-		top: 20,
+		backgroundColor: 'blue',
+		width: 100,
+		top: 100,
 		padding: 10,
 	},
 	container: {
@@ -76,20 +78,33 @@ class App extends Component {
 		this.state = {
 			string: 'hello'
 		};
+
+		console.log('constructor');
 	}
 
-	readData = () => {
+	readData(state, update) {
+		console.log('readData() called!');
 		// database.ref('random').once('value').then(function(snapshot) {
 		// 	var string = snapshot.val().string;
 		// 	console.log('STRING:', string);
 		// });
-		database.ref('random').on('value', (snap) => {
+		database.ref('random').once('value').then(function(snap) {
 			var str = snap.val().string;
 			console.log('STR:', str);
-			this.setState({
-				string: str
-			});
-		})
+			// this.setState({
+			// 	string: str
+			// });
+			state.string = str;
+			console.log('string after set (from readData):', state.string);
+			update();
+		});
+	}
+
+	handlePress = () => {
+		console.log('button pressed!');
+		var rootUpdate = this.forceUpdate.bind(this);
+		this.readData(this.state, rootUpdate);
+		console.log('string after set (from handlePress):', this.state.string);
 	}
 
 	/* Render everything */
@@ -104,9 +119,17 @@ class App extends Component {
 		// var data = this.readData();
 		// console.log('DATA:', data);
 
+		console.log('string initial:', this.state.string);
+
 		return (
 			<View style={styles.container}>
 				<Text style={styles.text}>{this.state.string}</Text>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={() => this.handlePress()}
+				>
+					<Text>hello</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
