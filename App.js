@@ -32,11 +32,18 @@ const styles = StyleSheet.create({
 		fontFamily: 'Avenir',
 		fontSize: 50,
 	},
-	button: {
+	button1: {
 		position: 'absolute',
 		backgroundColor: 'blue',
 		width: 100,
 		top: 100,
+		padding: 10,
+	},
+	button2: {
+		position: 'absolute',
+		backgroundColor: 'blue',
+		width: 100,
+		top: 200,
 		padding: 10,
 	},
 	container: {
@@ -82,7 +89,7 @@ class App extends Component {
 		console.log('constructor');
 	}
 
-	readData(state, update) {
+	readData(state, update, id) {
 		console.log('readData() called!');
 		// database.ref('random').once('value').then(function(snapshot) {
 		// 	var string = snapshot.val().string;
@@ -94,16 +101,16 @@ class App extends Component {
 			// this.setState({
 			// 	string: str
 			// });
-			state.string = str;
+			state.string = id == 'string' ? snap.val().string : snap.val().number;
 			console.log('string after set (from readData):', state.string);
 			update();
 		});
 	}
 
-	handlePress = () => {
+	handlePress = (id) => {
 		console.log('button pressed!');
 		var rootUpdate = this.forceUpdate.bind(this);
-		this.readData(this.state, rootUpdate);
+		this.readData(this.state, rootUpdate, id);
 		console.log('string after set (from handlePress):', this.state.string);
 	}
 
@@ -125,10 +132,16 @@ class App extends Component {
 			<View style={styles.container}>
 				<Text style={styles.text}>{this.state.string}</Text>
 				<TouchableOpacity
-					style={styles.button}
-					onPress={() => this.handlePress()}
+					style={styles.button1}
+					onPress={() => this.handlePress('string')}
 				>
-					<Text>hello</Text>
+					<Text>string</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.button2}
+					onPress={() => this.handlePress('number')}
+				>
+					<Text>number</Text>
 				</TouchableOpacity>
 			</View>
 		);
