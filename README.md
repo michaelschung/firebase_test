@@ -1,3 +1,3 @@
 # firebase_test
 
-This is just a simple app to test out using Firebase.
+This is just a super simple app to test out using Firebase.
